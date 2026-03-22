@@ -6,81 +6,82 @@
     <title>Bhanu Auto Service</title>
     <style>
         body { font-family: sans-serif; background: #000; color: #fff; margin: 0; text-align: center; }
-        .page { display: none; padding: 20px; } /* Animations Hata Diye Fast Speed Ke Liye */
+        .page { display: none; padding: 15px; }
+        #login-page { display: block; height: 100vh; padding-top: 80px; background: #111; }
         
-        /* Full Screen Login */
-        #login-page { display: block; height: 100vh; background: linear-gradient(#1a1a1a, #000); }
-        .login-container { padding-top: 100px; }
-        input { width: 80%; padding: 15px; margin: 10px 0; border-radius: 8px; border: none; font-size: 16px; }
+        /* Large Poster Styling */
+        .poster-img { width: 95%; max-width: 500px; border: 3px solid #ffcc00; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(255,204,0,0.3); }
         
-        /* Dashboard & Service */
-        .logo-img { width: 130px; border: 2px solid #ffcc00; border-radius: 50%; margin-top: 20px; }
-        .btn-box { display: flex; flex-direction: column; gap: 12px; align-items: center; margin-top: 20px; }
-        .main-btn { width: 90%; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; cursor: pointer; }
+        input { width: 85%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; }
+        .main-btn { width: 90%; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin-bottom: 10px; cursor: pointer; }
         
-        /* Display Images */
-        .showcase { width: 100%; max-width: 450px; border-radius: 15px; margin-top: 15px; border: 2px solid #333; }
-        .back-btn { background: #333; color: #fff; padding: 10px 20px; margin-top: 20px; border: none; border-radius: 5px; }
+        .whatsapp-btn { background: #25D366 !important; color: white !important; display: block; width: 90%; margin: 10px auto; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; }
+        
+        .product-img { width: 100%; border-radius: 10px; margin: 15px 0; }
     </style>
 </head>
 <body>
 
     <div id="login-page" class="page">
-        <div class="login-container">
-            <h1 style="color:#ffcc00">BHANU AUTO</h1>
-            <p>Enter Details to Start</p>
-            <input type="text" id="custName" placeholder="Customer Name" required>
-            <input type="number" id="custPhone" placeholder="Mobile Number" required>
-            <br><br>
-            <button class="main-btn" onclick="handleLogin()">LOGIN NOW</button>
-        </div>
+        <h1 style="color:#ffcc00">BHANU AUTO</h1>
+        <input type="text" id="custName" placeholder="Customer Name">
+        <input type="number" id="custPhone" placeholder="Mobile Number">
+        <button class="main-btn" onclick="login()">ENTER SHOP</button>
     </div>
 
     <div id="service-page" class="page">
-        <img src="logo.png" class="logo-img">
-        <h2 style="color:#ffcc00">Main Service Centre</h2>
-        <p>Bhanu Auto Parts & Service, Raipur</p>
-        <hr style="border:1px solid #333">
+        <img src="logo.png" class="poster-img"> <h2 style="color:#ffcc00">Humari Main Services</h2>
         
-        <div class="btn-box">
-            <button class="main-btn" onclick="openProduct('Battery Brands', 'battery_showcase.png')">🔋 BATTERY</button>
-            <button class="main-btn" onclick="openProduct('Engine Oils', 'oil_showcase.png')">🛢️ ENGINE OIL</button>
-            <button class="main-btn" onclick="openProduct('Tyre Range', 'tyre_showcase.png')">🛞 TYRE SERVICE</button>
+        <div style="background:#222; padding:15px; border-radius:10px; border-left:5px solid #ffcc00; margin-bottom:20px;">
+            <h3>Full Vehicle Checkup</h3>
+            <p>Cleaning, Washing & Engine Tuning</p>
         </div>
+
+        <button class="main-btn" onclick="openP('Tyre', 'tyre_showcase.png')">🛞 TYRE OPTIONS</button>
+        <button class="main-btn" onclick="openP('Oil', 'oil_showcase.png')">🛢️ ENGINE OIL</button>
+        <button class="main-btn" onclick="openP('Battery', 'battery_showcase.png')">🔋 BATTERY</button>
     </div>
 
     <div id="product-page" class="page">
-        <h2 id="titleText" style="color:#ffcc00"></h2>
-        <img id="displayImg" src="" class="showcase">
-        <br>
-        <button class="back-btn" onclick="showPage('service-page')">← Back to Menu</button>
+        <h2 id="pTitle" style="color:#ffcc00"></h2>
+        <img id="pImg" src="" class="product-img">
+        
+        <a id="waBtn" href="#" class="whatsapp-btn">BOOK ON WHATSAPP</a>
+        <button onclick="showPage('service-page')" style="background:none; color:#ccc; border:none; margin-top:20px;">← Back to Services</button>
     </div>
 
     <script>
-        function showPage(pageId) {
+        let userName = "", userPhone = "";
+        let scriptURL = 'TERA_GOOGLE_SCRIPT_URL_YAHAN_DALO'; 
+
+        function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById(pageId).style.display = 'block';
+            document.getElementById(id).style.display = 'block';
             window.scrollTo(0,0);
         }
 
-        function handleLogin() {
-            let name = document.getElementById('custName').value;
-            let phone = document.getElementById('custPhone').value;
-
-            if(name == "" || phone == "") {
-                alert("Please fill details!");
-                return;
-            }
-
-            // --- DATA SAVING LOGIC (Optional) ---
-            // Yahan hum Google Script ka URL daal sakte hain data sheet mein bhejne ke liye.
+        function login() {
+            userName = document.getElementById('custName').value;
+            userPhone = document.getElementById('custPhone').value;
+            if(!userName || !userPhone) return alert("Details bharo bhai!");
+            
+            // Google Sheet mein data bhejna
+            fetch(scriptURL, { method: 'POST', body: JSON.stringify({name: userName, phone: userPhone, service: 'Login'})});
             
             showPage('service-page');
         }
 
-        function openProduct(title, imgSrc) {
-            document.getElementById('titleText').innerText = title;
-            document.getElementById('displayImg').src = imgSrc;
+        function openP(title, img) {
+            document.getElementById('pTitle').innerText = title;
+            document.getElementById('pImg').src = img;
+            
+            // WhatsApp Link setup
+            let msg = `Hello Bhanu Auto, I am ${userName}. I want to enquire about ${title} service.`;
+            document.getElementById('waBtn').href = `https://wa.me/9179479082?text=${encodeURIComponent(msg)}`;
+            
+            // Sheet mein service update karna
+            fetch(scriptURL, { method: 'POST', body: JSON.stringify({name: userName, phone: userPhone, service: title})});
+            
             showPage('product-page');
         }
     </script>
