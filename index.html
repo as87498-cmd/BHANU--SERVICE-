@@ -3,43 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhanu Auto Parts & Service Centre</title>
+    <title>Bhanu Auto Parts & Service</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
-        .container { padding: 20px; }
-        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
-        .card { background: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 250px; }
-        img { width: 100%; border-radius: 5px; cursor: pointer; transition: 0.3s; }
-        img:hover { transform: scale(1.05); }
-        h1 { color: #333; }
+        /* Modern Design & Animations */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; text-align: center; margin: 0; overflow-x: hidden; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.8s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Login Box */
+        #login-page { display: block; margin-top: 100px; }
+        .login-card { background: #1e1e1e; padding: 30px; border-radius: 15px; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #ffcc00; }
+        input { padding: 12px; margin: 10px; width: 80%; border-radius: 5px; border: none; }
+        button { padding: 12px 25px; background: #ffcc00; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #e6b800; transform: scale(1.05); }
+
+        /* Dashboard Buttons */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 400px; margin: auto; }
+        .category-btn { background: #252525; padding: 20px; border-radius: 12px; border: 2px solid #333; cursor: pointer; transition: 0.3s; }
+        .category-btn:hover { border-color: #ffcc00; background: #333; }
+
+        /* Detail Pages */
+        .detail-img { width: 90%; max-width: 400px; border-radius: 10px; margin-top: 20px; border: 3px solid #ffcc00; }
+        .back-btn { margin-top: 20px; background: #555; }
     </style>
 </head>
 <body>
 
-    <h1>Bhanu Auto Parts & Service Centre</h1>
-    <p>Humari Services aur Products dekhein:</p>
-
-    <div class="gallery">
-        <div class="card">
-            <img src="battery_showcase.png" alt="Battery" onclick="alert('Battery Service selected!')">
-            <p>Amaron & Exide Batteries</p>
-        </div>
-
-        <div class="card">
-            <img src="oil_showcase.png" alt="Oil" onclick="alert('Engine Oil selected!')">
-            <p>Premium Engine Oils</p>
-        </div>
-
-        <div class="card">
-            <img src="tyre_showcase.png" alt="Tyre" onclick="alert('Tyre Service selected!')">
-            <p>Branded Tyres</p>
-        </div>
-        
-        <div class="card">
-            <img src="logo.png" alt="Logo">
-            <p>Our Brand Logo</p>
+    <div id="login-page" class="page">
+        <div class="login-card">
+            <img src="logo.png" style="width: 80px; margin-bottom: 10px;">
+            <h2>Bhanu Service Center</h2>
+            <p>Please Login to Continue</p>
+            <input type="text" id="username" placeholder="Enter Name"><br>
+            <button onclick="showDashboard()">LOGIN</button>
         </div>
     </div>
 
+    <div id="dashboard" class="page">
+        <h2>Our Services</h2>
+        <div class="grid">
+            <div class="category-btn" onclick="showDetail('battery')">🔋<br>Battery</div>
+            <div class="category-btn" onclick="showDetail('oil')">🛢️<br>Engine Oil</div>
+            <div class="category-btn" onclick="showDetail('tyre')">🛞<br>Tyre</div>
+            <div class="category-btn" onclick="showDetail('service')">🛠️<br>Service</div>
+        </div>
+    </div>
+
+    <div id="details" class="page">
+        <h2 id="detail-title">Category Name</h2>
+        <div id="detail-content">
+            <img id="item-image" src="" class="detail-img">
+            <p id="item-desc" style="margin-top: 15px; color: #ccc;"></p>
+        </div>
+        <button class="back-btn" onclick="showDashboard()">← Back</button>
+    </div>
+
+    <script>
+        function showDashboard() {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function showDetail(type) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById('details').style.display = 'block';
+            
+            const title = document.getElementById('detail-title');
+            const img = document.getElementById('item-image');
+            const desc = document.getElementById('item-desc');
+
+            if(type === 'battery') {
+                title.innerText = "Battery Brands";
+                img.src = "battery_showcase.png";
+                desc.innerText = "We have Amaron, Exide, and more!";
+            } else if(type === 'oil') {
+                title.innerText = "Engine Oils";
+                img.src = "oil_showcase.png";
+                desc.innerText = "Castrol, Motul, and Servo available.";
+            } else if(type === 'tyre') {
+                title.innerText = "Branded Tyres";
+                img.src = "tyre_showcase.png";
+                desc.innerText = "MRF, Apollo, and CEAT specialists.";
+            } else if(type === 'service') {
+                title.innerText = "Workshop Services";
+                img.src = "logo.png"; // Yahan service ki alag image bhi daal sakte ho
+                desc.innerText = "Full checkup and maintenance.";
+            }
+        }
+    </script>
 </body>
 </html>
