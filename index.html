@@ -1,1 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhanu Auto Parts & Service Centre</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { padding: 20px; }
+        .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+        .card { background: white; padding: 10px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 250px; }
+        img { width: 100%; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        img:hover { transform: scale(1.05); }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
 
+    <h1>Bhanu Auto Parts & Service Centre</h1>
+    <p>Humari Services aur Products dekhein:</p>
+
+    <div class="gallery">
+        <div class="card">
+            <img src="battery_showcase.png" alt="Battery" onclick="alert('Battery Service selected!')">
+            <p>Amaron & Exide Batteries</p>
+        </div>
+
+        <div class="card">
+            <img src="oil_showcase.png" alt="Oil" onclick="alert('Engine Oil selected!')">
+            <p>Premium Engine Oils</p>
+        </div>
+
+        <div class="card">
+            <img src="tyre_showcase.png" alt="Tyre" onclick="alert('Tyre Service selected!')">
+            <p>Branded Tyres</p>
+        </div>
+        
+        <div class="card">
+            <img src="logo.png" alt="Logo">
+            <p>Our Brand Logo</p>
+        </div>
+    </div>
+
+</body>
+</html>
