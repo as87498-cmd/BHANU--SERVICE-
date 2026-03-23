@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhanu Auto Service</title>
+    <title>Bhanu Auto Parts and Service Centre</title>
     <style>
         body { font-family: sans-serif; background: #000; color: #fff; margin: 0; text-align: center; }
         .page { display: none; padding: 15px; }
         #login-page { display: block; padding-top: 60px; height: 100vh; background: #111; }
         input { width: 85%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; background: #222; color: #fff; border: 1px solid #333; }
         .poster-img { width: 95%; max-width: 550px; border: 3px solid #ffcc00; border-radius: 15px; margin-top: 10px; }
-        .main-btn { width: 90%; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin: 8px 0; cursor: pointer; }
-        .whatsapp-btn { background: #25D366 !important; color: white !important; display: block; width: 90%; margin: 15px auto; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; }
+        .main-btn { width: 90%; max-width: 400px; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin: 8px 0; cursor: pointer; }
+        .whatsapp-btn { background: #25D366 !important; color: white !important; display: block; width: 90%; max-width: 400px; margin: 15px auto; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; }
         .product-img { width: 100%; max-width: 500px; border-radius: 12px; margin: 15px 0; border: 2px solid #444; }
-        h2 { color: #ffcc00; }
+        h1, h2 { color: #ffcc00; }
     </style>
 </head>
 <body>
 
     <div id="login-page" class="page">
-        <h1 style="color:#ffcc00">BHANU AUTO</h1>
+        <h1>BHANU AUTO PARTS</h1>
         <p>Grahak ka Naam aur Number bharein</p>
         <input type="text" id="custName" placeholder="Customer Name">
         <input type="number" id="custPhone" placeholder="Mobile Number">
@@ -29,8 +29,8 @@
 
     <div id="service-page" class="page">
         <img src="logo.png" class="poster-img">
-        <h2>Humari Main Services</h2>
-        <div style="background:#1a1a1a; padding:15px; border-radius:12px; border-left:6px solid #ffcc00; margin: 15px auto; width: 85%;">
+        <h2>Bhanu Auto Parts and Service Centre</h2>
+        <div style="background:#1a1a1a; padding:15px; border-radius:12px; border-left:6px solid #ffcc00; margin: 15px auto; width: 85%; max-width: 400px;">
             <h3 style="margin:0;">Full Vehicle Checkup</h3>
             <p style="margin:5px 0 0 0; color:#ccc;">Cleaning, Washing & Engine Tuning</p>
         </div>
@@ -42,18 +42,18 @@
     <div id="product-page" class="page">
         <h2 id="pTitle"></h2>
         <img id="pImg" src="" class="product-img">
-        <a id="waBtn" href="#" class="whatsapp-btn">ORDER ON WHATSAPP</a>
+        <a id="waBtn" href="#" class="whatsapp-btn">CONNECT ON WHATSAPP</a>
         <button onclick="showPage('service-page')" style="background:none; color:#ffcc00; border:1px solid #ffcc00; padding:10px 20px; border-radius:8px; margin-top:20px;">← Back</button>
     </div>
 
     <script>
-        // AGAR SCRIPT URL NAHI HAI TOH BHI CHALEGA
-        let scriptURL = 'NAHI_HAI'; 
+        let scriptURL = 'NAHI_HAI'; // Yahan baad mein Google link daal dena
         let userName = "", userPhone = "";
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
+            let target = document.getElementById(id);
+            if(target) target.style.display = 'block';
             window.scrollTo(0,0);
         }
 
@@ -66,22 +66,21 @@
                 return;
             }
 
-            // Dashboard kholne ke liye ye line zaroori hai
             showPage('service-page');
 
-            // Data bhejne ki koshish (background mein)
             if(scriptURL !== 'NAHI_HAI') {
-                try {
-                    fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({name: userName, phone: userPhone, service: 'Login'})});
-                } catch(e) { console.log("Sheet not connected"); }
+                fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({name: userName, phone: userPhone, service: 'Login'})}).catch(e => console.log(e));
             }
         }
 
         function openP(title, img) {
             document.getElementById('pTitle').innerText = title;
             document.getElementById('pImg').src = img;
-            let msg = `Ram Ram Bhanu Auto, main ${userName} baat kar raha hoon. Mujhe ${title} ke baare mein jankari chahiye.`;
+            
+            // WHATSAPP MESSAGE UPDATE
+            let msg = `Ram Ram Bhanu Auto Parts and Service Centre, main ${userName} baat kar raha hoon. Mujhe ${title} ke baare mein jankari chahiye.`;
             document.getElementById('waBtn').href = `https://wa.me/9179479082?text=${encodeURIComponent(msg)}`;
+            
             showPage('product-page');
         }
     </script>
