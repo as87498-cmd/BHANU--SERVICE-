@@ -47,7 +47,8 @@
     </div>
 
     <script>
-        let scriptURL = 'https://script.google.com/macros/s/AKfycbx6_eQu-oe-z1ZpmVlWBJSOQFibhEf3ftmj7xT7d8KtxQLa1HHfTS9lfM9svINRZhBW/exec';
+        // YAHAN APNA GOOGLE SCRIPT URL DALO
+        let scriptURL = 'NAHI_HAI'; 
         let userName = "", userPhone = "";
 
         function showPage(id) {
@@ -57,30 +58,19 @@
             window.scrollTo(0,0);
         }
 
-        function openP(title, img) {
-    // 1. Title aur Image screen par dikhao
-    document.getElementById('pTitle').innerText = title;
-    document.getElementById('pImg').src = img;
-    
-    // 2. WhatsApp message set karo
-    let msg = `Ram Ram Bhanu Auto Parts and Service Centre, main ${userName} baat kar raha hoon. Mujhe ${title} ke baare mein jankari chahiye.`;
-    document.getElementById('waBtn').href = `https://wa.me/9179479082?text=${encodeURIComponent(msg)}`;
-    
-    // 3. AB YE LINE SHEET MEIN SERVICE UPDATE KAREGI (Isse "Login" ki jagah Tyre/Oil likha aayega)
-    if(scriptURL !== 'NAHI_HAI') {
-        fetch(scriptURL, { 
-            method: 'POST', 
-            mode: 'no-cors', 
-            body: JSON.stringify({name: userName, phone: userPhone, service: title}) 
-        });
-    }
-    
-    // 4. Agla page dikhao
-    showPage('product-page');
-}
+        function login() {
+            userName = document.getElementById('custName').value;
+            userPhone = document.getElementById('custPhone').value;
+            
+            if(userName === "" || userPhone === "") {
+                alert("Pehle Name aur Number daalein!");
+                return;
+            }
 
+            // Dashboard turant khulega
             showPage('service-page');
 
+            // Sheet mein data jayega
             if(scriptURL !== 'NAHI_HAI') {
                 fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({name: userName, phone: userPhone, service: 'Login'})}).catch(e => console.log(e));
             }
@@ -90,10 +80,15 @@
             document.getElementById('pTitle').innerText = title;
             document.getElementById('pImg').src = img;
             
-            // WHATSAPP MESSAGE UPDATE
+            // WhatsApp Message
             let msg = `Ram Ram Bhanu Auto Parts and Service Centre, main ${userName} baat kar raha hoon. Mujhe ${title} ke baare mein jankari chahiye.`;
             document.getElementById('waBtn').href = `https://wa.me/9179479082?text=${encodeURIComponent(msg)}`;
             
+            // AB YE LINE SHEET MEIN "LOGIN" KI JAGAH SERVICE NAME LIKHEGI
+            if(scriptURL !== 'NAHI_HAI') {
+                fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({name: userName, phone: userPhone, service: title})}).catch(e => console.log(e));
+            }
+
             showPage('product-page');
         }
     </script>
