@@ -57,14 +57,27 @@
             window.scrollTo(0,0);
         }
 
-        function login() {
-            userName = document.getElementById('custName').value;
-            userPhone = document.getElementById('custPhone').value;
-            
-            if(userName === "" || userPhone === "") {
-                alert("Pehle Name aur Number daalein!");
-                return;
-            }
+        function openP(title, img) {
+    // 1. Title aur Image screen par dikhao
+    document.getElementById('pTitle').innerText = title;
+    document.getElementById('pImg').src = img;
+    
+    // 2. WhatsApp message set karo
+    let msg = `Ram Ram Bhanu Auto Parts and Service Centre, main ${userName} baat kar raha hoon. Mujhe ${title} ke baare mein jankari chahiye.`;
+    document.getElementById('waBtn').href = `https://wa.me/9179479082?text=${encodeURIComponent(msg)}`;
+    
+    // 3. AB YE LINE SHEET MEIN SERVICE UPDATE KAREGI (Isse "Login" ki jagah Tyre/Oil likha aayega)
+    if(scriptURL !== 'NAHI_HAI') {
+        fetch(scriptURL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify({name: userName, phone: userPhone, service: title}) 
+        });
+    }
+    
+    // 4. Agla page dikhao
+    showPage('product-page');
+}
 
             showPage('service-page');
 
