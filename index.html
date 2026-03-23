@@ -52,7 +52,13 @@
 
     <script>
         let userName = "", userPhone = "";
-        let scriptURL = 'TERA_GOOGLE_SCRIPT_URL_YAHAN_DALO'; 
+        let scriptURL = 'function doPost(e) {
+  var sheetId = 'APNI_SHEET_KI_ID_DALO'; // Sheet ke URL se copy karo
+  var sheet = SpreadsheetApp.openById(sheetId).getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  sheet.appendRow([data.name, data.phone, data.service, new Date()]);
+  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
+}'; 
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
