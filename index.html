@@ -7,89 +7,60 @@
     <style>
         body { font-family: sans-serif; background: #000; color: #fff; margin: 0; text-align: center; }
         .page { display: none; padding: 15px; }
-        #login-page { display: block; height: 100vh; padding-top: 80px; background: #111; }
         
-        /* Large Poster Styling */
-        .poster-img { width: 95%; max-width: 500px; border: 3px solid #ffcc00; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 0 20px rgba(255,204,0,0.3); }
+        /* Login Page */
+        #login-page { display: block; padding-top: 60px; height: 100vh; background: #111; }
+        input { width: 85%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; background: #222; color: #fff; border: 1px solid #333; }
         
-        input { width: 85%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; }
-        .main-btn { width: 90%; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin-bottom: 10px; cursor: pointer; }
+        /* Poster Styling - Isse Poster Bada Dikhega */
+        .poster-img { width: 95%; max-width: 550px; border: 3px solid #ffcc00; border-radius: 15px; margin-top: 10px; box-shadow: 0 0 20px rgba(255,204,0,0.4); }
         
-        .whatsapp-btn { background: #25D366 !important; color: white !important; display: block; width: 90%; margin: 10px auto; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; }
+        /* Buttons */
+        .main-btn { width: 90%; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin: 8px 0; cursor: pointer; }
+        .whatsapp-btn { background: #25D366 !important; color: white !important; display: block; width: 90%; margin: 15px auto; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; }
         
-        .product-img { width: 100%; border-radius: 10px; margin: 15px 0; }
+        .product-img { width: 100%; max-width: 500px; border-radius: 12px; margin: 15px 0; border: 2px solid #444; }
+        h2 { color: #ffcc00; margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <div id="login-page" class="page">
         <h1 style="color:#ffcc00">BHANU AUTO</h1>
+        <p>Grahak ka Naam aur Number bharein</p>
         <input type="text" id="custName" placeholder="Customer Name">
         <input type="number" id="custPhone" placeholder="Mobile Number">
-        <button class="main-btn" onclick="login()">ENTER SHOP</button>
+        <br><br>
+        <button class="main-btn" onclick="login()">LOGIN / ENTRY</button>
     </div>
 
     <div id="service-page" class="page">
-        <img src="logo.png" class="poster-img"> <h2 style="color:#ffcc00">Humari Main Services</h2>
+        <img src="logo.png" class="poster-img">
+        <h2>Humari Main Services</h2>
         
-        <div style="background:#222; padding:15px; border-radius:10px; border-left:5px solid #ffcc00; margin-bottom:20px;">
-            <h3>Full Vehicle Checkup</h3>
-            <p>Cleaning, Washing & Engine Tuning</p>
+        <div style="background:#1a1a1a; padding:15px; border-radius:12px; border-left:6px solid #ffcc00; margin: 15px auto; width: 85%;">
+            <h3 style="margin:0;">Full Vehicle Checkup</h3>
+            <p style="margin:5px 0 0 0; color:#ccc;">Cleaning, Washing & Engine Tuning</p>
         </div>
 
-        <button class="main-btn" onclick="openP('Tyre', 'tyre_showcase.png')">🛞 TYRE OPTIONS</button>
-        <button class="main-btn" onclick="openP('Oil', 'oil_showcase.png')">🛢️ ENGINE OIL</button>
-        <button class="main-btn" onclick="openP('Battery', 'battery_showcase.png')">🔋 BATTERY</button>
+        <p>Niche click karke products dekhein:</p>
+        <button class="main-btn" onclick="openP('Tyre Options', 'tyre_showcase.png')">🛞 TYRE SPECIALIST</button>
+        <button class="main-btn" onclick="openP('Engine Oil', 'oil_showcase.png')">🛢️ ENGINE OIL</button>
+        <button class="main-btn" onclick="openP('Battery', 'battery_showcase.png')">🔋 BATTERY BRANDS</button>
     </div>
 
     <div id="product-page" class="page">
-        <h2 id="pTitle" style="color:#ffcc00"></h2>
+        <h2 id="pTitle"></h2>
         <img id="pImg" src="" class="product-img">
         
-        <a id="waBtn" href="#" class="whatsapp-btn">BOOK ON WHATSAPP</a>
-        <button onclick="showPage('service-page')" style="background:none; color:#ccc; border:none; margin-top:20px;">← Back to Services</button>
+        <a id="waBtn" href="#" class="whatsapp-btn">ORDER ON WHATSAPP</a>
+        
+        <button onclick="showPage('service-page')" style="background:none; color:#ffcc00; border:1px solid #ffcc00; padding:10px 20px; border-radius:8px; margin-top:20px;">← Back to Services</button>
     </div>
 
     <script>
+        // Yahan apni Google Script ka Link paste karna
+        let scriptURL = 'TERA_GOOGLE_SCRIPT_URL_YAHAN_DALO'; 
         let userName = "", userPhone = "";
-        let scriptURL = 'function doPost(e) {
-  var sheetId = 'APNI_SHEET_KI_ID_DALO'; // Sheet ke URL se copy karo
-  var sheet = SpreadsheetApp.openById(sheetId).getActiveSheet();
-  var data = JSON.parse(e.postData.contents);
-  sheet.appendRow([data.name, data.phone, data.service, new Date()]);
-  return ContentService.createTextOutput("Success").setMimeType(ContentService.MimeType.TEXT);
-}'; 
 
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            window.scrollTo(0,0);
-        }
-
-        function login() {
-            userName = document.getElementById('custName').value;
-            userPhone = document.getElementById('custPhone').value;
-            if(!userName || !userPhone) return alert("Details bharo bhai!");
-            
-            // Google Sheet mein data bhejna
-            fetch(scriptURL, { method: 'POST', body: JSON.stringify({name: userName, phone: userPhone, service: 'Login'})});
-            
-            showPage('service-page');
-        }
-
-        function openP(title, img) {
-            document.getElementById('pTitle').innerText = title;
-            document.getElementById('pImg').src = img;
-            
-            // WhatsApp Link setup
-            let msg = `Hello Bhanu Auto, I am ${userName}. I want to enquire about ${title} service.`;
-            document.getElementById('waBtn').href = `https://wa.me/9179479082?text=${encodeURIComponent(msg)}`;
-            
-            // Sheet mein service update karna
-            fetch(scriptURL, { method: 'POST', body: JSON.stringify({name: userName, phone: userPhone, service: title})});
-            
-            showPage('product-page');
-        }
-    </script>
-</body>
-</html>
+        function showPage(
