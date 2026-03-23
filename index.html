@@ -7,11 +7,19 @@
     <style>
         body { font-family: sans-serif; background: #000; color: #fff; margin: 0; text-align: center; }
         .page { display: none; padding: 15px; }
+        
+        /* Fast transition ke liye animation hataya */
         #login-page { display: block; padding-top: 60px; height: 100vh; background: #111; }
+        
         input { width: 85%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; background: #222; color: #fff; border: 1px solid #333; }
-        .poster-img { width: 95%; max-width: 550px; border: 3px solid #ffcc00; border-radius: 15px; margin-top: 10px; }
+        
+        /* Bada Poster */
+        .poster-img { width: 95%; max-width: 550px; border: 3px solid #ffcc00; border-radius: 15px; margin-top: 10px; box-shadow: 0 0 15px rgba(255,204,0,0.5); }
+        
+        /* Buttons */
         .main-btn { width: 90%; max-width: 400px; padding: 18px; background: #ffcc00; color: #000; border: none; border-radius: 12px; font-weight: bold; font-size: 18px; margin: 8px 0; cursor: pointer; }
         .whatsapp-btn { background: #25D366 !important; color: white !important; display: block; width: 90%; max-width: 400px; margin: 15px auto; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 18px; }
+        
         .product-img { width: 100%; max-width: 500px; border-radius: 12px; margin: 15px 0; border: 2px solid #444; }
         h1, h2 { color: #ffcc00; }
     </style>
@@ -21,7 +29,7 @@
     <div id="login-page" class="page">
         <h1>BHANU AUTO PARTS</h1>
         <p>Grahak ka Naam aur Number bharein</p>
-        <input type="text" id="custName" placeholder="Customer Name">
+        <input type="text" id="custName" placeholder="Enter Name">
         <input type="number" id="custPhone" placeholder="Mobile Number">
         <br><br>
         <button class="main-btn" onclick="login()">LOGIN / ENTRY</button>
@@ -30,25 +38,31 @@
     <div id="service-page" class="page">
         <img src="logo.png" class="poster-img">
         <h2>Bhanu Auto Parts and Service Centre</h2>
+        
         <div style="background:#1a1a1a; padding:15px; border-radius:12px; border-left:6px solid #ffcc00; margin: 15px auto; width: 85%; max-width: 400px;">
             <h3 style="margin:0;">Full Vehicle Checkup</h3>
             <p style="margin:5px 0 0 0; color:#ccc;">Cleaning, Washing & Engine Tuning</p>
         </div>
+
+        <p>Niche click karke products dekhein:</p>
         <button class="main-btn" onclick="openP('Tyre Options', 'tyre_showcase.png')">🛞 TYRE SPECIALIST</button>
         <button class="main-btn" onclick="openP('Engine Oil', 'oil_showcase.png')">🛢️ ENGINE OIL</button>
-        <button class="main-btn" onclick="openP('Battery', 'battery_showcase.png')">🔋 BATTERY BRANDS</button>
+        <button class="main-btn" onclick="openP('Battery Brands', 'battery_showcase.png')">🔋 BATTERY BRANDS</button>
     </div>
 
     <div id="product-page" class="page">
         <h2 id="pTitle"></h2>
         <img id="pImg" src="" class="product-img">
-        <a id="waBtn" href="#" class="whatsapp-btn">CONNECT ON WHATSAPP</a>
-        <button onclick="showPage('service-page')" style="background:none; color:#ffcc00; border:1px solid #ffcc00; padding:10px 20px; border-radius:8px; margin-top:20px;">← Back</button>
+        
+        <a id="waBtn" href="#" class="whatsapp-btn">ORDER ON WHATSAPP</a>
+        
+        <button onclick="showPage('service-page')" style="background:none; color:#ffcc00; border:1px solid #ffcc00; padding:10px 20px; border-radius:8px; margin-top:20px;">← Back to Services</button>
     </div>
 
     <script>
-        // YAHAN APNA GOOGLE SCRIPT URL DALO
+        // --- APNA GOOGLE SCRIPT URL YAHAN DALO ---
         let scriptURL = 'NAHI_HAI'; 
+        
         let userName = "", userPhone = "";
 
         function showPage(id) {
@@ -67,29 +81,39 @@
                 return;
             }
 
-            // Dashboard turant khulega
+            // Dashboard khol do
             showPage('service-page');
 
-            // Sheet mein data jayega
-            if(scriptURL !== 'NAHI_HAI') {
-                fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({name: userName, phone: userPhone, service: 'Login'})}).catch(e => console.log(e));
-            }
+            // Sheet mein 'Login' bhej do
+            sendDataToSheet('Login');
         }
 
         function openP(title, img) {
             document.getElementById('pTitle').innerText = title;
             document.getElementById('pImg').src = img;
             
-            // WhatsApp Message
+            // Proper WhatsApp Message Setup
             let msg = `Ram Ram Bhanu Auto Parts and Service Centre, main ${userName} baat kar raha hoon. Mujhe ${title} ke baare mein jankari chahiye.`;
             document.getElementById('waBtn').href = `https://wa.me/9179479082?text=${encodeURIComponent(msg)}`;
             
-            // AB YE LINE SHEET MEIN "LOGIN" KI JAGAH SERVICE NAME LIKHEGI
-            if(scriptURL !== 'NAHI_HAI') {
-                fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({name: userName, phone: userPhone, service: title})}).catch(e => console.log(e));
-            }
+            // Sheet mein service ka naam bhej do (Tyre/Oil/Battery)
+            sendDataToSheet(title);
 
             showPage('product-page');
+        }
+
+        function sendDataToSheet(serviceType) {
+            if(scriptURL !== 'NAHI_HAI') {
+                fetch(scriptURL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify({
+                        name: userName, 
+                        phone: userPhone, 
+                        service: serviceType 
+                    }) 
+                }).catch(e => console.log("Error sending to sheet"));
+            }
         }
     </script>
 </body>
